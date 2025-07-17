@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 
 # Load model
-model = tf.keras.models.load_model("model.keras")
+model = tf.keras.models.load_model("mymodel.keras")
 
 # Class names (update if different)
 class_names = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
