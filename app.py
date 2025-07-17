@@ -10,28 +10,25 @@ def load_model():
 
 model = load_model()
 
-# Labels
+# Class labels
 class_names = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash']
 
-# App UI
+# App layout
 st.set_page_config(page_title="Garbage Classifier", layout="centered")
-st.title("🗑️ Garbage Classification")
-st.markdown("Upload an image of waste and the model will classify it.")
+st.title("🗑️ Garbage Classification App")
+st.write("Upload an image to classify it into one of the 6 garbage categories.")
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("Upload an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Uploaded Image", use_column_width=True)
 
-    # Preprocess
-    image = image.resize((150, 150))
-    img_array = np.array(image) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
+    img = image.resize((150, 150))
+    img_array = np.expand_dims(np.array(img) / 255.0, axis=0)
 
-    # Predict
-    prediction = model.predict(img_array)[0]
-    predicted_class = class_names[np.argmax(prediction)]
-    confidence = np.max(prediction) * 100
+    predictions = model.predict(img_array)[0]
+    predicted_class = class_names[np.argmax(predictions)]
+    confidence = np.max(predictions) * 100
 
-    st.success(f"**Prediction:** `{predicted_class}` ({confidence:.2f}%)")
+    st.success(f"**Prediction:** {predicted_class} ({confidence:.2f}%)")
